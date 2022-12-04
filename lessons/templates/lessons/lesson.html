@@ -15,4 +15,16 @@
         <h3><a href="{{ m.get_absolete_url }}">{{ m.title }}</a> ({{ m.material_type }})</h3>
     {% endfor %}
 
+    {% with lesson.comments.count as total_comments %}
+        Total comments: {{ total_comments }}
+    {% endwith %}
+
+    {% for c in lesson.comments.all %}
+        <p>Comment #{{ forloop.counter }} by {{ c.created_by }} at {{ c.created_at }}</p>
+        {{ c.body }}
+    {% empty %}
+        No comments.
+    {% endfor %}
+
+
 {% endblock %}
