@@ -17,7 +17,6 @@ def lesson(request, slug):
 def edit_lesson(request, slug):
     lesson = get_object_or_404(models.LessonEntity, slug=slug)
     if request.method == "POST":
-        print(f"\nREQUEST: {request.POST}\n")
         lesson_form = forms.LessonForm(request.POST, instance=lesson)
         if lesson_form.is_valid():
             lesson_form.save()

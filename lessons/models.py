@@ -7,7 +7,6 @@ class WithTimeTracking(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-
     class Meta:
         abstract = True
 
@@ -65,6 +64,28 @@ class LessonEntity(
 
     def get_absolete_url(self) -> str:
         return reverse("fetch-one-lesson", args=[self.slug])
+
+
+class CommentEntity(
+    WithTimeTracking,
+    models.Model,
+):
+    lesson = models.ForeignKey(
+        LessonEntity,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
+
+    body = models.TextField()
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="user_comments",
+        null=True,
+    )
+
+    def __str__(self) -> str:
+        return f"COMMENT <{self.body}>"
 
 
 class ProfileEntity(models.Model):

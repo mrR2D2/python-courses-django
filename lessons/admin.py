@@ -21,6 +21,12 @@ class MaterialEntityAdmin(admin.ModelAdmin):
     ordering = ("slug", )
 
 
+@admin.register(models.CommentEntity)
+class CommentEntityAdmin(admin.ModelAdmin):
+    list_display = ("lesson", "body", "created_by", "created_at", "updated_at")
+    ordering = ("lesson", "created_at")
+
+
 @admin.register(models.ProfileEntity)
 class ProfileEntityAdmin(admin.ModelAdmin):
     """
