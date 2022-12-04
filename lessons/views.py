@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpResponse
 
 from . import forms
 from . import models
@@ -62,4 +63,28 @@ def create_material(request, lesson_slug):
         request, 
         "materials/create.html", 
         {"form": forms.MaterialForm}
+    )
+
+
+def register(request):
+    if request.method == "POST":
+        registration_form = forms.RegistrationForm(request.POST)
+        if registration_form.is_valid():
+            new_user = registration_form.save(commit=False)
+            new_user.set_password(registration_form.cleaned_data["password"])
+            new_user.save()
+            models.ProfileEntity.objects.create(user=new_user)
+            return render(
+                request,
+                "registration/registration_complete.html",
+                {"new_user": new_user},
+            )
+        else:
+            return HttpResponse("Bad credentials")
+
+    registration_form = forms.RegistrationForm()
+    return render(
+        request,
+        "registration/register.html",
+        {"form": registration_form},
     )

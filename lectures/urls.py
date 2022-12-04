@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from lessons.urls import urlpatterns_lessons, urlpatterns_materials
+from lessons.urls import (
+    urlpatterns_auth,
+    urlpatterns_lessons, 
+    urlpatterns_materials,
+)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("lessons/", include(urlpatterns_lessons)),
     path("materials/", include(urlpatterns_materials)),
+    path("auth/", include(urlpatterns_auth)),
 ]

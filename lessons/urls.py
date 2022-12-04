@@ -1,4 +1,5 @@
 
+from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
@@ -17,4 +18,10 @@ urlpatterns_lessons = [
 
 urlpatterns_materials = [
     path("<slug:slug>", view=views.material, name="fetch-one-material"),
+]
+
+
+urlpatterns_auth = [
+    path("register", view=views.register, name="register"),
+    path("login/", view=auth_views.LoginView.as_view(), name="login"),
 ]
