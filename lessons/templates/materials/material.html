@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ material.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ material.title }}</h1>
+    <p>{{ material.created_at }}</p>
+    <p>{{ material.material_type }}</p>
+    <p>{{ material.body }} </p>
+{% endblock %}

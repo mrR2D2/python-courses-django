@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    All lessons
+{% endblock %}
+
+{% block content %}
+    <h1> List of my lessons </h1>
+    {% for l in lessons %}
+        <h2>{{ l.title }}</h2>
+        <p>{{ l.description }}</p>
+        <a href="{{ l.get_absolete_url }}">link</a>
+    {% endfor %}
+{% endblock %}

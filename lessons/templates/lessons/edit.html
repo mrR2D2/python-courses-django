@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edit Lesson
+{% endblock %}
+
+{% block content %}
+    <h1>Edit lesson "{{ lesson.slug }}" </h1>
+    <form action="./edit" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save Changes">
+    </form>
+{% endblock %}

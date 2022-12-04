@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Material
+{% endblock %}
+
+{% block content %}
+    <h1>Create new material</h1>
+    <form action="./materials" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create Material">
+    </form>
+{% endblock %}
