@@ -5,10 +5,64 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Create new material</h1>
-    <form action="./materials" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create Material">
-    </form>
+    <div class="container">
+        <div class="material-header">
+            <h1>Create new material</h1>
+        </div>
+         
+        <form action="./materials" method="POST">
+            {% csrf_token %}
+            <div class="input-group has-validation">
+                <div class="mb-3 form-floating is-invalid">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="id_title"
+                        maxlength="64"
+                        name="title"
+                    >
+                    <label for="id_title">Title</label>
+                </div>
+                <div id="id_text_feedback" class="invalid-feedback">
+                {{ title_error }}
+                </div>
+            </div>
+            <div class="input-group has-validation">
+                <div class="mb-3 form-floating">
+                    <textarea 
+                        type="text" 
+                        class="form-control" 
+                        id="id_body"
+                        name="body"
+                        style="height: 100px"
+                    ></textarea>
+                    <label for="id_body">Description</label>
+                </div>
+            </div>
+            <div class="input-group has-validation">
+                <div class="mb-3 form-floating">
+                    <select 
+                        class="form-select" 
+                        id="id_material_type" 
+                        name="material_type"
+                        required
+                    >
+                    {% for m_type in material_types %}
+                        <option value="{{ m_type.0 }}">{{ m_type.1 }}</option>
+                    {% endfor %}
+                    </select>
+                    <label for="id_material_type">Material Type</label>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="mb-3">
+                    <input 
+                        type="submit" 
+                        class="btn btn-success" 
+                        value="Create Material"
+                    >
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

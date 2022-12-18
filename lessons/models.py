@@ -21,9 +21,11 @@ class MaterialEntity(
 
     THEORY_MATERIAL = 'theory'
     PRACTICE_MATERIAL = 'practice'
+    TEST_MATERIAL = 'test'
     MATERIAL_TYPES = (
         (THEORY_MATERIAL, 'Theoretic Materials'), 
         (PRACTICE_MATERIAL, 'Practical Material'),
+        (TEST_MATERIAL, 'Testing Material'),
     )
 
     title = models.CharField(max_length=64)

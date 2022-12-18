@@ -5,10 +5,41 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Edit lesson "{{ lesson.slug }}" </h1>
+<div class="container">
+    <div class="lessons-header">
+        <h1>Edit lesson "{{ lesson.slug }}"</h1>
+    </div>  
     <form action="./edit" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save Changes">
+        <div class="mb-3">
+            <label for="id_title" class="form-label">Title</label>
+            <input 
+                id="id_title"
+                name="title"
+                type="text" 
+                class="form-control" value="{{ form.title.value }}"
+                maxlength="64"
+                required
+            />
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            <textarea 
+                id="id_description" 
+                name="description"
+                type="text" 
+                class="form-control" 
+                rows="12"
+                required
+            >{{ form.description.value }}</textarea>
+        </div>
+        <div class="mb-3">
+            <input 
+                type="submit" 
+                class="btn btn-success" 
+                value="Save Changes"
+            >
+        </div>
     </form>
+</div>
 {% endblock %}

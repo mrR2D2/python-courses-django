@@ -5,26 +5,48 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ lesson.title }}</h1>
+<div class="container">  
+    <div class="lessons-header">
+        <h1>{{ lesson.title }}</h1>
+    </div>
+
     <p>{{ lesson.description }} </p>
-    <h2>Materials:</h2>
-    <p>
-        <a href="{% url "create-material" lesson.slug %}">Add Material</a>
-    </p>
-    {% for m in lesson.materials.all %}
-        <h3><a href="{{ m.get_absolete_url }}">{{ m.title }}</a> ({{ m.material_type }})</h3>
-    {% endfor %}
 
-    {% with lesson.comments.count as total_comments %}
-        Total comments: {{ total_comments }}
-    {% endwith %}
+    <div class="list-group materials-list">
+        <div class="list-group-item list-group-item-secondary" aria-current="true">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <h5 class="mb-1">Materials</h5>
+                <a class="btn btn-primary" href="{% url "create-material" lesson.slug %}" role="button">Add</a>
+            </div>
+        </div>
+        {% for m in lesson.materials.all %}
+        <a href="{{ m.get_absolete_url }}" class="list-group-item list-group-item-action" aria-current="true">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ m.title }}</h5>
+            <small>{{ m.created_at }}</small>
+          </div>
+          <small>{{ m.material_type }}</small>
+        </a>
+        {% endfor %}
+    </div>
 
-    {% for c in lesson.comments.all %}
-        <p>Comment #{{ forloop.counter }} by {{ c.created_by }} at {{ c.created_at }}</p>
-        {{ c.body }}
-    {% empty %}
-        No comments.
-    {% endfor %}
+    <div class="list-group comments">
+        <div class="list-group-item list-group-item-secondary" aria-current="true">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                {% with lesson.comments.count as total_comments %}
+                <h5 class="mb-1">Comments <span class="badge bg-danger rounded-pill">{{ total_comments }}</span></h5>
+                {% endwith %}
+            </div>
+        </div>
+        {% for c in lesson.comments.all %}
+        <div class="list-group-item list-group-item-action" aria-current="true">
+            <p class="mb-1">{{ c.body }}</p>
+            <small>{{ c.created_by }} at {{ c.created_at }}</small>
+        </div>
+        {% empty %}
+            <p>No comments.</p>
+        {% endfor %}
+    </div>
 
-
+</div>
 {% endblock %}

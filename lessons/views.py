@@ -1,20 +1,30 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
+from django.core.mail import send_mail
 
 from . import forms
 from . import models
 
 
+@login_required
 def all_lessons(request):
     lessons = models.LessonEntity.objects.all()
-    return render(request, "lessons/lessons.html", {"lessons": lessons})
+    return render(
+        request, 
+        "lessons/lessons.html", 
+        {
+            "lessons": lessons,
+        })
 
 
+@login_required
 def lesson(request, slug):    
     lesson = get_object_or_404(models.LessonEntity, slug=slug)
     return render(request, "lessons/lesson.html", {"lesson": lesson})
 
 
+@login_required
 def edit_lesson(request, slug):
     lesson = get_object_or_404(models.LessonEntity, slug=slug)
     if request.method == "POST":
@@ -38,12 +48,13 @@ def edit_lesson(request, slug):
         )
 
 
-
+@login_required
 def material(request, slug):
     material = get_object_or_404(models.MaterialEntity, slug=slug)
     return render(request, "materials/material.html", {"material": material})
 
 
+@login_required
 def create_material(request, lesson_slug):
     lesson = get_object_or_404(models.LessonEntity, slug=lesson_slug)
     if request.method == "POST":
@@ -58,11 +69,56 @@ def create_material(request, lesson_slug):
                 "lessons/lesson.html", 
                 {"lesson": lesson},
             )
+        else:
+            render(
+                request, 
+                "materials/create.html", 
+                {
+                    "material_types": models.MaterialEntity.MATERIAL_TYPES,
+                    "title_error": material_form.errors["title"][0],
+                    "body_error": material_form.errors["body"][0],
+                }  
+            )
 
     return render(
         request, 
         "materials/create.html", 
-        {"form": forms.MaterialForm}
+        {
+            "material_types": models.MaterialEntity.MATERIAL_TYPES,
+        }
+    )
+
+
+def _prepare_email(material, cd, request):
+    uri = request.build_absolute_uri(material.get_absolete_url())
+    body = (
+        f"<a href='{uri}'>{material.title}</a> was recommended to you by {cd['my_name']}.\n\n"
+        f"Comment: {cd['comment']}"
+    )
+    subject = f"{cd['my_name']} recommends you {material.title}"
+    return subject, body
+
+
+def share_material(request, slug):
+    material = get_object_or_404(models.MaterialEntity, slug=slug)
+    is_sent = False
+    if request.method == "POST":
+        form = forms.EmailMaterialForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            subject, body = _prepare_email(material, cd, request)
+            send_mail(subject, body, "admin@admin.com", [cd["to_email"]])
+            is_sent = True
+    else:
+        form = forms.EmailMaterialForm()
+    return render(
+        request,
+        "materials/share.html",
+        {
+            "form": form,
+            "material": material,
+            "is_sent": is_sent,
+        }
     )
 
 

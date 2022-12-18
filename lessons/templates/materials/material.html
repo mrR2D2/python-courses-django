@@ -9,4 +9,5 @@
     <p>{{ material.created_at }}</p>
     <p>{{ material.material_type }}</p>
     <p>{{ material.body }} </p>
+    <p><a href="{% url "share-material" material.slug %}">Share Material</a></p>
 {% endblock %}

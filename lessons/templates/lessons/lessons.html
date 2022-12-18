@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block content %}
-    <h1> List of my lessons </h1>
-    {% for l in lessons %}
-        <h2>{{ l.title }}</h2>
-        <p>{{ l.description }}</p>
-        <a href="{{ l.get_absolete_url }}">link</a>
-    {% endfor %}
+    <div>
+        <div class="lessons-header">
+            <h1> List of my lessons </h1>
+        </div>
+        <div class="lessons-list">
+            {% for l in lessons %}
+            <div class="lesson">
+                <h2 class="red-text">{{ l.title }}</h2>
+                <p>{{ l.description }}</p>
+                <a href="{{ l.get_absolete_url }}">link</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
